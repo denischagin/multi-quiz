@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">GeoQuiz</string>
+
+    <string name="question_silenok">Силенок долбоеб?</string>
+    <string name="question_negr">Ярик негр?</string>
+    <string name="question_adaptive">Адаптив?</string>
+    <string name="question_android">Андрей Зайцев андроид разработчик или ?</string>
+    <string name="question_spring">Александр Шешин любит hibernate?</string>
+    <string name="question_sheshin">Кто такой Александр Шешин? Ты знаешь?</string>
+    <string name="question_mmtr">В ММТР плятят зп?</string>
+
+    <string name="true_button">Конечно</string>
+    <string name="false_button">False Button</string>
+
+    <string name="correct_toast">Верно!</string>
+    <string name="incorrect_toast">Неверно!</string>
+
+    <string name="next_button">Следующий вопрос</string>
+
+    <string name="right_answers">Вот сколько раз вы ответили правильно: </string>
+</resources>
