@@ -18,4 +18,5 @@
     <string name="next_button">Следующий вопрос</string>
 
     <string name="right_answers">Вот сколько раз вы ответили правильно: </string>
+    <string name="question_already_exists">Вы уже ответили на этот вопрос</string>
 </resources>

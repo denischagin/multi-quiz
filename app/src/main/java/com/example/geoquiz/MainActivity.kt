@@ -2,7 +2,6 @@ package com.example.geoquiz
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -10,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import com.example.geoquiz.viewmodels.QuizViewModel
+import kotlin.math.roundToInt
 
 private const val TAG = "MainActivity"
 private const val KEY_INDEX = "index"
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         }
         falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
+
             nextQuestionWithUpdate()
         }
         nextButton.setOnClickListener {
@@ -57,31 +58,6 @@ class MainActivity : AppCompatActivity() {
             prevQuestionWithUpdate()
         }
         updateQuestion()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d(TAG, "onStart() called")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d(TAG, "onResume() called")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d(TAG, "onPause() called")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d(TAG, "onStop() called")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d(TAG, "onDestroy() called")
     }
 
     private fun updateQuestion() {
@@ -106,12 +82,39 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAnswer(userAnswer: Boolean) {
         val correctAnswer = quizViewModel.currentQuestionAnswer
+
+        val currentQuestionAlreadyAnswered = quizViewModel
+            .questionsMap.keys.stream().filter {
+                it == quizViewModel.currentQuestionText
+            }.count() >= 1
+
+        if (currentQuestionAlreadyAnswered) {
+            Toast.makeText(this, R.string.question_already_exists, Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val messageResId = if (userAnswer == correctAnswer) {
             quizViewModel.counterOfRightAnswers++
+            quizViewModel.questionsMap[quizViewModel.currentQuestionText] = true
             R.string.correct_toast
         } else {
+            quizViewModel.questionsMap[quizViewModel.currentQuestionText] = false
             R.string.incorrect_toast
         }
+
+        if (quizViewModel.questionsMap.size == quizViewModel.questionBank.size) {
+            val percentRightAnswers =
+                (quizViewModel.counterOfRightAnswers * 100 / quizViewModel.questionsMap.size).toDouble()
+                    .roundToInt()
+
+            Toast.makeText(
+                this,
+                "Вы правильно ответили на $percentRightAnswers% вопросов",
+                Toast.LENGTH_SHORT
+            ).show()
+            return
+        }
+
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
 

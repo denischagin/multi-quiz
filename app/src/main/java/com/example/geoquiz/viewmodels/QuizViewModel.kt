@@ -10,8 +10,8 @@ private const val TAG = "QuizViewModel"
 class QuizViewModel : ViewModel() {
     var currentIndex = 0
     var counterOfRightAnswers = 0
-
-    private var questionBank = listOf(
+    var questionsMap = HashMap<Int, Boolean>()
+    var questionBank = listOf(
         Question(R.string.question_negr, true),
         Question(R.string.question_silenok, true),
         Question(R.string.question_adaptive, false),
