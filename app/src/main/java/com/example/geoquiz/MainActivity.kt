@@ -45,11 +45,12 @@ class MainActivity : AppCompatActivity() {
             checkAnswer(true)
             nextQuestionWithUpdate()
         }
+
         falseButton.setOnClickListener { view: View ->
             checkAnswer(false)
-
             nextQuestionWithUpdate()
         }
+
         nextButton.setOnClickListener {
             nextQuestionWithUpdate()
         }
@@ -70,6 +71,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             falseButton.visibility = View.VISIBLE
         }
+
         questionTextView.setText(questionTextResId)
         rightAnswersTextView.setText(quizViewModel.counterOfRightAnswers.toString())
     }
@@ -102,11 +104,13 @@ class MainActivity : AppCompatActivity() {
             R.string.incorrect_toast
         }
 
+        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
+
         if (quizViewModel.questionsMap.size == quizViewModel.questionBank.size) {
             val percentRightAnswers =
                 (quizViewModel.counterOfRightAnswers * 100 / quizViewModel.questionsMap.size).toDouble()
                     .roundToInt()
-
+`
             Toast.makeText(
                 this,
                 "Вы правильно ответили на $percentRightAnswers% вопросов",
@@ -115,7 +119,6 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
 
     private fun nextQuestionWithUpdate() {
@@ -127,5 +130,4 @@ class MainActivity : AppCompatActivity() {
         quizViewModel.moveToPrev()
         updateQuestion()
     }
-
 }
