@@ -1,5 +1,6 @@
 package com.example.geoquiz
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: Button
     private lateinit var questionTextView: TextView
     private lateinit var rightAnswersTextView: TextView
+    private lateinit var showAnswerButton: Button
 
     private val quizViewModel: QuizViewModel by lazy {
         ViewModelProviders.of(this).get(QuizViewModel::class.java)
@@ -40,13 +42,32 @@ class MainActivity : AppCompatActivity() {
         prevButton = findViewById(R.id.prev_button)
         questionTextView = findViewById(R.id.question_text_view)
         rightAnswersTextView = findViewById(R.id.right_answers_text_view)
+        showAnswerButton = findViewById(R.id.show_answer_button)
 
-        trueButton.setOnClickListener { view: View ->
+        showAnswerButton.setOnClickListener {
+            quizViewModel.isAlreadyViewed = true
+            val intent = Intent(this@MainActivity, ViewAnswerActivity::class.java)
+            val answer = quizViewModel.currentQuestionAnswer
+            intent.putExtra("answer", answer)
+            startActivity(intent)
+        }
+
+        trueButton.setOnClickListener {
+            if (quizViewModel.isAlreadyViewed) {
+                Toast.makeText(this, "Ай ай ай, ты теперь не сможешь ответить", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
             checkAnswer(true)
             nextQuestionWithUpdate()
         }
 
-        falseButton.setOnClickListener { view: View ->
+        falseButton.setOnClickListener {
+            if (quizViewModel.isAlreadyViewed) {
+                Toast.makeText(this, "Ай ай ай, ты теперь не сможешь ответить", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
             checkAnswer(false)
             nextQuestionWithUpdate()
         }
@@ -110,7 +131,7 @@ class MainActivity : AppCompatActivity() {
             val percentRightAnswers =
                 (quizViewModel.counterOfRightAnswers * 100 / quizViewModel.questionsMap.size).toDouble()
                     .roundToInt()
-`
+
             Toast.makeText(
                 this,
                 "Вы правильно ответили на $percentRightAnswers% вопросов",

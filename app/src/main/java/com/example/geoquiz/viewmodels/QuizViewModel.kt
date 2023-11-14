@@ -21,6 +21,8 @@ class QuizViewModel : ViewModel() {
         Question(R.string.question_mmtr, false),
     )
 
+    var isAlreadyViewed: Boolean = false
+
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
 
