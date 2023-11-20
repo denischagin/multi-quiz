@@ -9,11 +9,14 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
+import com.example.geoquiz.databinding.ActivityMainBinding
 import com.example.geoquiz.viewmodels.QuizViewModel
 import kotlin.math.roundToInt
 
 private const val TAG = "MainActivity"
 private const val KEY_INDEX = "index"
+
+private lateinit var binding: ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
@@ -30,19 +33,19 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate(Bundle? called")
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 
         val currentIndex = savedInstanceState?.getInt(KEY_INDEX, 0) ?: 0
         quizViewModel.currentIndex = currentIndex
 
-        trueButton = findViewById(R.id.true_button)
-        falseButton = findViewById(R.id.false_button)
-        nextButton = findViewById(R.id.next_button)
-        prevButton = findViewById(R.id.prev_button)
-        questionTextView = findViewById(R.id.question_text_view)
-        rightAnswersTextView = findViewById(R.id.right_answers_text_view)
-        showAnswerButton = findViewById(R.id.show_answer_button)
+        trueButton = binding.trueButton
+        falseButton = binding.falseButton
+        nextButton = binding.nextButton
+        prevButton = binding.prevButton
+        questionTextView = binding.questionTextView
+        rightAnswersTextView = binding.rightAnswersTextView
+        showAnswerButton = binding.showAnswerButton
 
         showAnswerButton.setOnClickListener {
             quizViewModel.isAlreadyViewed = true
